@@ -1,5 +1,7 @@
 from tkinter import *
+from tkinter import ttk
 import random
+import operator
 class MyWindow:
     def __init__(self, win):
 
@@ -21,6 +23,10 @@ class MyWindow:
         self.lbl2.place(x=100, y=250)
         self.t4.place(x=200, y=250)
         self.lbl3.place(x=210, y=50)
+        operators = ["+", "-", "*", "/"]
+        self.combobox = ttk.Combobox(win, values=operators)
+        self.combobox.set("Pick an Option")
+        self.combobox.place(x=210, y=80)
     def generate(self):
         self.t1.config(state='normal') #allow editing of the number boxes
         self.t2.config(state='normal')
@@ -38,7 +44,11 @@ class MyWindow:
 
     def answer(self):
         answer=int(self.t3.get())
-        result=int(self.t1.get())+int(self.t2.get())
+        testval1 = int(self.t1.get())
+        testval2 = int(self.t2.get())
+        operator = self.combobox.get()
+        expression = str(testval1) + str(operator) + str(testval2)
+        result= eval(expression)
         if result==answer:
             self.t4.config(state='normal')
             self.t4.delete(0, 'end')
