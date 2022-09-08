@@ -3,7 +3,7 @@ from tkinter import ttk
 
 root = Tk()
 root.geometry("500x300+10+10")
-
+root.config(bg="#3655ff")
 frame = Frame(root)
 frame.pack()
 
