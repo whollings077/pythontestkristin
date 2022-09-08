@@ -1,11 +1,12 @@
 from tkinter import *
+from tkinter import ttk
 import random
+import operator
 class MyWindow:
     def __init__(self, win):
 
         self.lbl1=Label(win, text='Answer')
         self.lbl2=Label(win, text='Correct/Incorrect')
-        self.lbl3=Label(win, text='+')
         self.t1=Entry(state='readonly' , bd=3)
         self.t2=Entry(state='readonly', bd=3)
         self.t3=Entry( bd=3)
@@ -20,7 +21,10 @@ class MyWindow:
         self.t3.place(x=200, y=200)
         self.lbl2.place(x=100, y=250)
         self.t4.place(x=200, y=250)
-        self.lbl3.place(x=210, y=50)
+        operators = ["+", "-", "*", "/"]
+        self.combobox = ttk.Combobox(win, values=operators, width=1)
+        self.combobox.set(operators[0])
+        self.combobox.place(x=210, y=50)
     def generate(self):
         self.t1.config(state='normal') #allow editing of the number boxes
         self.t2.config(state='normal')
@@ -30,6 +34,8 @@ class MyWindow:
         self.t4.delete(0, 'end')
         num1=random.randint(1, 10) #generate random numbers
         num2=random.randint(1, 10)
+        if num1 < num2: #make sure the first number is bigger than the second
+            num1 = num1 + num2
         self.t1.insert(END, str(num1)) #insert the numbers into the boxes
         self.t2.insert(END, str(num2))
         self.t1.config(state='readonly') #make the boxes read only again
@@ -38,7 +44,11 @@ class MyWindow:
 
     def answer(self):
         answer=int(self.t3.get())
-        result=int(self.t1.get())+int(self.t2.get())
+        testval1 = int(self.t1.get())
+        testval2 = int(self.t2.get())
+        operator = self.combobox.get()
+        expression = str(testval1) + str(operator) + str(testval2)
+        result= eval(expression)
         if result==answer:
             self.t4.config(state='normal')
             self.t4.delete(0, 'end')
@@ -56,6 +66,7 @@ class MyWindow:
 
 window=Tk()
 mywin=MyWindow(window)
+window.config(bg="#3655ff")
 window.title('Williams Math Game')
 window.geometry("500x300+10+10")
 window.mainloop()
