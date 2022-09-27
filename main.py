@@ -7,10 +7,12 @@ class MyWindow:
 
         self.lbl1=Label(win, text='Answer') #where the answer is put by the user
         self.lbl2=Label(win, text='Correct/Incorrect') #where the program tells the user if they are correct or not
+        self.lbl5=Label(win, text='Name') #where the user puts their name
         self.t1=Entry(state='readonly' , bd=3) #the first number
         self.t2=Entry(state='readonly', bd=3) #the second number
         self.t3=Entry( bd=3) #where the user puts their answer
         self.t4=Entry(state='readonly', bd=3) #where the program tells the user if they are correct or not
+        self.t5=Entry(state='readonly', bd=3) #where the user enters their name
         self.t1.place(x=50, y=50)
         self.t2.place(x=250, y=50)
         self.b1=Button(win, text='submit answer', command=self.answer)
@@ -21,10 +23,13 @@ class MyWindow:
         self.t3.place(x=200, y=200)
         self.lbl2.place(x=100, y=250)
         self.t4.place(x=200, y=250)
+        self.lbl5.place(x=100, y=300)
+        self.t5.place(x=200, y=300)
         operators = ["+", "-", "*",] #the operators that can be used
         self.combobox = ttk.Combobox(win, values=operators, width=1)
         self.combobox.set(operators[0])
         self.combobox.place(x=210, y=50)
+        self.t5.config(state='normal')
     def generate(self):
         self.t1.config(state='normal') #allow editing of the number boxes
         self.t2.config(state='normal')
@@ -42,12 +47,14 @@ class MyWindow:
         self.t1.config(state='readonly') #make the boxes read only again
         self.t2.config(state='readonly')
         self.t4.config(state='readonly')
+        self.t5.config(state='normal')
 
     def answer(self): #check the answer
         answer=int(self.t3.get())
         testval1 = int(self.t1.get())
         testval2 = int(self.t2.get())
         operator = self.combobox.get()
+        name = self.t5.get()
         expression = str(testval1) + str(operator) + str(testval2)
         result= eval(expression)
         if result==answer: #if the answer is correct
@@ -56,18 +63,18 @@ class MyWindow:
             self.t4.insert(END, 'Correct')
             self.t4.config(state='readonly')
             with open('logs.txt', 'a') as f:
-                f.write("Correct " + str(answer) + "="+ str(result) + '\n')
+                f.write("Correct " + str(answer) + "="+ str(result) + str(" ") + str(name) + '\n')
         else: #if the answer is incorrect
             self.t4.config(state='normal')
             self.t4.delete(0, 'end')
             self.t4.insert(END, 'Incorrect')
             self.t4.config(state='readonly')
             with open('logs.txt', 'a') as f:
-                f.write("Incorrect " + str(answer) + "="+ str(result) + '\n')
+                f.write("Incorrect " + str(answer) + "="+ str(result) + str(" ") + str(name) + '\n')
 
 window=Tk()
 mywin=MyWindow(window)
 window.config(bg="#3655ff")
 window.title('Williams Math Game')
-window.geometry("500x300+10+10")
+window.geometry("640x480+10+10")
 window.mainloop()
