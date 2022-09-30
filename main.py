@@ -2,6 +2,7 @@ from tkinter import *
 from tkinter import ttk
 import random
 import operator
+import csv
 class MyWindow:
     def __init__(self, win):
 
@@ -41,7 +42,6 @@ class MyWindow:
         num2=random.randint(1, 10)
         if num1 < num2: #make sure the first number is bigger than the second
             num1 = num1 + num2
-
         self.t1.insert(END, str(num1)) #insert the numbers into the boxes
         self.t2.insert(END, str(num2))
         self.t1.config(state='readonly') #make the boxes read only again
@@ -55,22 +55,25 @@ class MyWindow:
         testval2 = int(self.t2.get())
         operator = self.combobox.get()
         name = self.t5.get()
-        expression = str(testval1) + str(operator) + str(testval2)
-        result= eval(expression)
+        expression = str(testval1) + str(operator) + str(testval2) #create the equation based on user input
+        result= eval(expression) #evaluate the equation
         if result==answer: #if the answer is correct
             self.t4.config(state='normal')
             self.t4.delete(0, 'end')
             self.t4.insert(END, 'Correct')
             self.t4.config(state='readonly')
-            with open('logs.txt', 'a') as f:
-                f.write("Correct " + str(answer) + "="+ str(result) + str(" ") + str(name) + '\n')
+            with open('logs.csv', 'a', newline='') as csvfile:
+                writer = csv.writer(csvfile)
+                writer.writerow([name, expression, answer, 'Correct'])
         else: #if the answer is incorrect
             self.t4.config(state='normal')
             self.t4.delete(0, 'end')
             self.t4.insert(END, 'Incorrect')
             self.t4.config(state='readonly')
-            with open('logs.txt', 'a') as f:
-                f.write("Incorrect " + str(answer) + "="+ str(result) + str(" ") + str(name) + '\n')
+            with open('logs.csv', 'a', newline='') as csvfile:
+                writer = csv.writer(csvfile)
+                writer.writerow([name, expression, answer, 'Incorrect'])
+
 
 window=Tk()
 mywin=MyWindow(window)
