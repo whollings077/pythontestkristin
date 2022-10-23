@@ -3,9 +3,9 @@ from tkinter import ttk
 import random
 import operator
 import csv
+import time
 class MyWindow:
     def __init__(self, win):
-
         self.lbl1=Label(win, text='Your Answer:') #where the answer is put by the user
         self.lbl2=Label(win, text='Result:') #where the program tells the user if they are correct or not
         self.lbl5=Label(win, text='Your Name:') #where the user puts their name
@@ -18,14 +18,14 @@ class MyWindow:
         self.t2.place(x=250, y=50)
         self.b1=Button(win, text='Submit', command=self.answer)
         self.b2=Button(win, text='New Question', command=self.generate)
-        self.b1.place(x=100, y=150)
-        self.b2.place(x=200, y=150)
-        self.lbl1.place(x=100, y=200)
-        self.t3.place(x=200, y=200)
-        self.lbl2.place(x=100, y=250)
-        self.t4.place(x=200, y=250)
-        self.lbl5.place(x=100, y=300)
-        self.t5.place(x=200, y=300)
+        self.b1.place(x=280, y=150) #submit button
+        self.b2.place(x=100, y=150) #new question button
+        self.lbl1.place(x=100, y=200) #label for the answer box
+        self.t3.place(x=200, y=200) #answer box
+        self.lbl2.place(x=100, y=250) #label for the result box
+        self.t4.place(x=200, y=250) #result box
+        self.lbl5.place(x=100, y=300) #label for the name box
+        self.t5.place(x=200, y=300) #name box
         operators = ["+", "-", "*",] #the operators that can be used
         self.combobox = ttk.Combobox(win, values=operators, width=1)
         self.combobox.set(operators[0])
@@ -64,6 +64,7 @@ class MyWindow:
         testval2 = int(self.t2.get()) #these are the numbers that the user is being tested on
         operator = self.combobox.get() #get the operator
         name = self.t5.get() #get the name
+        timenow = time.strftime("%D:%H:%M:%S") #get the time
         expression = str(testval1) + str(operator) + str(testval2) #create the equation based on user input
         result= eval(expression) #evaluate the equation
         if result==answer: #if the answer is correct
@@ -73,7 +74,7 @@ class MyWindow:
             self.t4.config(state='readonly') #make the result box read only again
             with open('logs.csv', 'a', newline='') as csvfile: #writes the name and the correct answer to a csv file
                 writer = csv.writer(csvfile)
-                writer.writerow([name, expression, answer, 'Correct'])
+                writer.writerow([timenow, name, expression, answer, 'Correct'])
         else: #if the answer is incorrect
             self.t4.config(state='normal') #make the result box editable
             self.t4.delete(0, 'end') #clear the result box
