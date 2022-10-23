@@ -82,7 +82,7 @@ class MyWindow:  #create class
             self.t4.config(state='readonly') #make the result box read only again
             with open('logs.csv', 'a', newline='') as csvfile: #writes the name and the incorrect answer to a csv file
                 writer = csv.writer(csvfile) #create the writer
-                writer.writerow([datetime, name, expression, answer, 'Incorrect']) #write the data to the csv file
+                writer.writerow([timenow, name, expression, answer, 'Incorrect']) #write the data to the csv file
 
 
 window=Tk() #create the window
